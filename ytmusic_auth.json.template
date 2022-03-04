@@ -1,0 +1,9 @@
+{
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "*/*",
+    "Accept-Language": "en-US",
+    "Content-Type": "application/json",
+    "X-Goog-AuthUser": "0",
+    "x-origin": "https://music.youtube.com",
+    "Cookie" : ""
+}
