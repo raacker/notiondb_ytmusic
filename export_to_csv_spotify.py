@@ -3,10 +3,8 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import json
 import pathlib
 
-#playlist_uri = ""
-#export_csv_name = ""
-playlist_uri = "spotify:playlist:3uGRo6dvdiD3HgCt6AfGQ9"
-export_csv_name = "new_found_in_feb"
+playlist_uri = ""
+export_csv_name = ""
 
 auth_json_f = open('spotify_auth.json')
 auth_json = json.load(auth_json_f)

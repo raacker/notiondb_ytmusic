@@ -20,7 +20,7 @@ playlist_id = playlist_obj['uri']
 
 f = open((playlist_name + ".csv"), "r")
 
-track_uris = []
+track_uris = set()
 searchHitMiss = []
 count = 0
 for line in f.readlines():
@@ -33,7 +33,7 @@ for line in f.readlines():
 
     foundURI = False
     for item in result['tracks']['items']:
-        track_uris.append(item['uri'])
+        track_uris.add(item['uri'])
         foundURI = True
         break
     
@@ -42,8 +42,9 @@ for line in f.readlines():
 
 # spotify api request limit is 100
 max_track_request = 99
-for i in range(0, len(track_uris), max_track_request):
-    tracks = track_uris[i:i + max_track_request]
+result_uris = list(track_uris)
+for i in range(0, len(result_uris), max_track_request):
+    tracks = result_uris[i:i + max_track_request]
     addResult = sp.playlist_add_items(playlist_id, tracks)
 
 if len(searchHitMiss) != 0:
