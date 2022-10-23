@@ -8,9 +8,7 @@ from notion_client import Client
 from notion_client import APIErrorCode, APIResponseError
 
 database_id = ""
-tags = ["Groovy"]
-
-
+tags = [""]
 
 auth_json_f = open('notion_auth.json')
 auth_json = json.load(auth_json_f)
