@@ -8,6 +8,7 @@ from notion_client import Client
 from notion_client import APIErrorCode, APIResponseError
 
 database_id = ""
+csv_file_name = ""
 tags = [""]
 
 auth_json_f = open('notion_auth.json')
@@ -17,7 +18,7 @@ notion = Client(auth=auth_json['secret'])
 
 def export_to_csv(query_result):
     current_path = pathlib.Path(__file__).parent.resolve()
-    f = open(str(current_path) + "/" + "".join(tags) + ".csv", "w")
+    f = open(str(current_path) + "/" + "".join(csv_file_name) + ".csv", "w")
 
     for result in query_result['results']:
         title_name = result['properties']['Title']['title'][0]['plain_text'].lstrip().rstrip()

@@ -11,7 +11,7 @@ from notion_client import APIErrorCode, APIResponseError
 # https://developers.notion.com/docs/getting-started
 
 database_id = ""
-csv_name = "New in apir"
+csv_name = ""
 
 auth_json_f = open('notion_auth.json')
 auth_json = json.load(auth_json_f)
