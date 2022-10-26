@@ -15,15 +15,18 @@ class SpotifyAPI(APIProvider):
             client_id=self.auth_json['client_id'],
             client_secret=self.auth_json['client_secret']))
         
-        result = sp.playlist_items(playlist_id=playlist_uri, limit=100)
+        playlist_info = sp.playlist(playlist_id=playlist_uri)
 
         f = open(str(Path.cwd()) + "/output/" + csv_name, "w")
-
-        for item in result['items']:
-            track = item['track']
-            song_name = track['name']
-            artist_name = track['artists'][0]['name']
-            f.write(song_name + "," + artist_name + "\n")
+        
+        tracks = playlist_info['tracks']
+        while tracks is not None:
+            for item in tracks['items']:
+                track = item['track']
+                song_name = track['name']
+                artist_name = track['artists'][0]['name']
+                f.write(song_name + "," + artist_name + "\n")
+            tracks = sp.next(tracks)
         f.close()
 
 

@@ -16,7 +16,7 @@ Options:
 
 """
 from docopt import docopt
-from playlist_core import process_argv
+from process_argv import process_argv
 
 def main(argv):
     process_argv(argv)
