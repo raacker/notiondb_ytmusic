@@ -1,5 +1,4 @@
 from ytmusicapi import YTMusic
-from pathlib import Path
 from apis.api_provider import APIProvider
 import utils.utils as utils
 import re
@@ -15,11 +14,16 @@ class YoutubeAPI(APIProvider):
 
         return url[id_start.end():]
 
-    def export_playlist_to_csv(self, playlist_id, csv_name):
+    def export_playlist_to_csv(self, playlist_id, csv_name = ""):
         playlist_id = YoutubeAPI.get_youtube_playlist_id(playlist_id)
         plist = self.ytmusic.get_playlist(playlist_id, 1000)
 
         tracks = plist["tracks"]
+
+        if not csv_name:
+            csv_name = plist["title"]
+        if ".csv" not in csv_name:
+            csv_name += ".csv"
 
         f = open(utils.get_output_path() + csv_name, "w")
 
@@ -29,13 +33,19 @@ class YoutubeAPI(APIProvider):
         f.close()
 
 
-    def generate_playlist_from_csv(self, csv_name):
-        playlist_id = self.ytmusic.create_playlist(csv_name)
-
+    def generate_playlist_from_csv(self, csv_name, playlist_name = ""):
         f = open(utils.get_output_path() + csv_name, "r")
+        if not f:
+            return
+
+        if not playlist_name:
+            playlist_name = csv_name
+        if ".csv" in playlist_name:
+            playlist_name = playlist_name[:-4]
+
+        playlist_id = self.ytmusic.create_playlist(playlist_name)
 
         searchHitMiss = []
-        count = 0
         for line in f.readlines():
             song_name, artist_name = utils.generate_song_artist_tuple(line)
             search_query = song_name + " " + artist_name

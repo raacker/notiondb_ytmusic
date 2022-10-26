@@ -2,7 +2,6 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from spotipy.oauth2 import SpotifyOAuth
 import json
-from pathlib import Path
 from apis.api_provider import APIProvider
 import utils.utils as utils
 import re
@@ -20,13 +19,18 @@ class SpotifyAPI(APIProvider):
         playlist_end = re.search("\?", url)
         return "spotify:playlist:" + url[playlist.end():playlist_end.start()]
 
-    def export_playlist_to_csv(self, playlist_uri, csv_name):
+    def export_playlist_to_csv(self, playlist_uri, csv_name = ""):
         sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
             client_id=self.auth_json['client_id'],
             client_secret=self.auth_json['client_secret']))
         
         playlist_uri = SpotifyAPI.get_spotifyURL(playlist_uri)
         playlist_info = sp.playlist(playlist_id=playlist_uri)
+
+        if not csv_name:
+            csv_name = playlist_info["name"]
+        if ".csv" not in csv_name:
+            csv_name += ".csv"
 
         f = open(utils.get_output_path() + csv_name, "w")
         
@@ -41,18 +45,25 @@ class SpotifyAPI(APIProvider):
         f.close()
 
 
-    def generate_playlist_from_csv(self, csv_name):
+    def generate_playlist_from_csv(self, csv_name, playlist_name = ""):
         sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=self.auth_json['client_id'],
                                                     client_secret=self.auth_json['client_secret'],
                                                     redirect_uri="http://localhost",
                                                     scope="playlist-modify-public"))
+        f = open(utils.get_output_path() + csv_name, "r")
+        if not f:
+            return
 
         current_user = sp.current_user()
 
-        playlist_obj = sp.user_playlist_create(current_user['id'], csv_name)
+        if not playlist_name:
+            playlist_name = csv_name
+        if ".csv" in playlist_name:
+            playlist_name = playlist_name[:-4]
+
+        playlist_obj = sp.user_playlist_create(current_user['id'], playlist_name)
         playlist_id = playlist_obj['uri']
 
-        f = open(utils.get_output_path() + csv_name, "r")
 
         track_uris = set()
         searchHitMiss = []

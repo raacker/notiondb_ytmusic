@@ -2,8 +2,8 @@
 
 Usage:
   playlist_manager.py --help
-  playlist_manager.py --export (--spotify | --youtube) --url="<playlist_url>" --file=<file_path>
-  playlist_manager.py --generate (--spotify | --youtube) --file=<file_path> [--name=<playlist_name>]
+  playlist_manager.py --export (--spotify | --youtube) --url="<playlist_url>" [--name=<file_name>]
+  playlist_manager.py --generate (--spotify | --youtube) --file="<file_path>" [--name=<playlist_name>]
   playlist_manager.py --version
 
 Options:
