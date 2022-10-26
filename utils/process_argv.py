@@ -1,5 +1,5 @@
-from APIs.api_factory import Provider
-from APIs.api_factory import generate_api_manager
+from apis.api_factory import Provider
+from apis.api_factory import generate_api_manager
 
 def process_argv(argv):
     api_provider = None

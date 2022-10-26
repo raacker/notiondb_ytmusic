@@ -1,4 +1,4 @@
-"""Playlist Manager
+"""Playlist Manager 1.0
 
 Usage:
   playlist_manager.py --help
@@ -16,7 +16,7 @@ Options:
 
 """
 from docopt import docopt
-from process_argv import process_argv
+from utils.process_argv import process_argv
 
 def main(argv):
     process_argv(argv)

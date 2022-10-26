@@ -3,21 +3,32 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from spotipy.oauth2 import SpotifyOAuth
 import json
 from pathlib import Path
-from APIs.api_provider import APIProvider
+from apis.api_provider import APIProvider
+import utils.utils as utils
+import re
 
 class SpotifyAPI(APIProvider):
     def __init__(self):
-        auth_json_f = open(str(Path.cwd()) + '/auth/spotify_auth.json')
+        auth_json_f = open(utils.get_auth_path() + '/spotify_auth.json')
         self.auth_json = json.load(auth_json_f)
+
+    def get_spotifyURL(url):
+        if re.search("^spotify:playlist:*", url):
+            return url
+
+        playlist = re.search("playlist/", url)
+        playlist_end = re.search("\?", url)
+        return "spotify:playlist:" + url[playlist.end():playlist_end.start()]
 
     def export_playlist_to_csv(self, playlist_uri, csv_name):
         sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
             client_id=self.auth_json['client_id'],
             client_secret=self.auth_json['client_secret']))
         
+        playlist_uri = SpotifyAPI.get_spotifyURL(playlist_uri)
         playlist_info = sp.playlist(playlist_id=playlist_uri)
 
-        f = open(str(Path.cwd()) + "/output/" + csv_name, "w")
+        f = open(utils.get_output_path() + csv_name, "w")
         
         tracks = playlist_info['tracks']
         while tracks is not None:
@@ -41,16 +52,13 @@ class SpotifyAPI(APIProvider):
         playlist_obj = sp.user_playlist_create(current_user['id'], csv_name)
         playlist_id = playlist_obj['uri']
 
-        f = open(str(Path.cwd())  + "/output/" + csv_name, "r")
+        f = open(utils.get_output_path() + csv_name, "r")
 
         track_uris = set()
         searchHitMiss = []
         count = 0
         for line in f.readlines():
-            line = line.replace("\n", "")
-            comma_index = line.rindex(",")
-            song_name = line[:comma_index].strip()
-            artist_name = line[comma_index+1:].strip()
+            song_name, artist_name = utils.generate_song_artist_tuple(line)
             search_query = song_name + " " + artist_name
             result = sp.search(q=search_query, limit=1)
 

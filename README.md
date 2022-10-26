@@ -1,14 +1,13 @@
-# playlist_api
-Auto import and export python script for Youtube Music & Spotify. Apple Music or other platforms can be added as well!
+# playlist_trader
+csv based playlist importer & exporter for major streaming platform such as Youtube Music and Spotify.
 
 
 ## Youtube Auth
 
 API : [ytmusicapi](https://github.com/sigma67/ytmusicapi)
 
-[Setup instruction](https://ytmusicapi.readthedocs.io/en/latest/setup.html)
-
-Get Packet data and copy informations you need to fill into ytmusic_auth.json
+1. [Setup instruction](https://ytmusicapi.readthedocs.io/en/latest/setup.html)
+2. Get Packet data and copy informations you need to fill into ytmusic_auth.json
 
 
 ## Spotify Auth

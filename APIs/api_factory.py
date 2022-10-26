@@ -1,6 +1,6 @@
 from enum import Enum
-from APIs.spotify_api import SpotifyAPI
-from APIs.youtube_api import YoutubeAPI
+from apis.spotify_api import SpotifyAPI
+from apis.youtube_api import YoutubeAPI
 
 class Provider(Enum):
     Spotify = 0,
