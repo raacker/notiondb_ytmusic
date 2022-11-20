@@ -67,7 +67,6 @@ class SpotifyAPI(APIProvider):
 
         track_uris = set()
         searchHitMiss = []
-        count = 0
         for line in f.readlines():
             song_name, artist_name = utils.generate_song_artist_tuple(line)
             search_query = song_name + " " + artist_name

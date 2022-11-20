@@ -43,7 +43,7 @@ class YoutubeAPI(APIProvider):
         if ".csv" in playlist_name:
             playlist_name = playlist_name[:-4]
 
-        playlist_id = self.ytmusic.create_playlist(playlist_name)
+        playlist_id = self.ytmusic.create_playlist(playlist_name, "Description")
 
         searchHitMiss = []
         for line in f.readlines():
@@ -71,4 +71,5 @@ class YoutubeAPI(APIProvider):
         else:
             print ("Successfully fetched all songs!")
 
+        print ("Playlist URL : https://music.youtube.com/playlist?list=" + playlist_id)
         f.close()
